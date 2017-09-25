@@ -49,6 +49,6 @@ test:
 #
 production:
   <<: *default
-  database: poolwatch_production
-  username: poolwatch
-  password: <%= ENV['POOLWATCH_DATABASE_PASSWORD'] %>
+  database: poolwatch
+  username: root
+  password: p0pq3eKXmmdyve1QYfES

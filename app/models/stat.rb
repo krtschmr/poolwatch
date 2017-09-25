@@ -20,15 +20,13 @@ class Stat < ApplicationRecord
 
 
 	def self.import!
-		100000.times do
-			url = "https://supportxmr.com/api/miner/48w5LQHbxU5aN1rS5QJ3Fne4DLUDVUY9hLSqzagys15WW8GcjMDhct84WhGeh7ePZ992RB6CVLjJShobQxFxdKt2RsQ9YjC/stats"
-			begin
-				Stat.create JSON.parse(open(url).read).slice("amtPaid", "amtDue")
-			rescue
-				p "failed"
-			end
-			sleep 60
+		url = "https://supportxmr.com/api/miner/48w5LQHbxU5aN1rS5QJ3Fne4DLUDVUY9hLSqzagys15WW8GcjMDhct84WhGeh7ePZ992RB6CVLjJShobQxFxdKt2RsQ9YjC/stats"
+		begin
+			Stat.create JSON.parse(open(url).read).slice("amtPaid", "amtDue")
+		rescue
+			p "failed"
 		end
+
 	end
 
 	def amtPaid=(val) super; set_total; end
