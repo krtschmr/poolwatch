@@ -1,0 +1,18 @@
+.container
+  =Stat.group_by_day(:created_at).sum(:payment)
+  -Stat.group_by_day(:created_at).sum(:payment).each do |date, total|
+    %p
+      %strong=date
+      %em= XMR.new(total).format
+
+
+
+.container
+  %table.table.table-striped
+    -Stat.order(id: :desc).each do |stat|
+
+      %tr
+        %td=stat.id
+        %td=stat.created_at.strftime("%d.%m %Y %H:%M")
+        %td=stat.display_payment
+        -#%td=stat.display_total
