@@ -1,18 +1,49 @@
 .container
-  =Stat.group_by_day(:created_at).sum(:payment)
-  -Stat.group_by_day(:created_at).sum(:payment).each do |date, total|
-    %p
-      %strong=date
-      %em= XMR.new(total).format
+  =month_calendar do |date|
+    .income.text-center
+      .date=date.strftime("%d. %b %Y")
+      -income = Stat.where(created_at: date.midnight..date.end_of_day).sum(:payment)
+      -next unless income > 0
+
+      .stats
+        .cc.XMR
+        =XMR.new(income).short
+
+
+      -#.stats
+        .cc.XMR
+        .number
+          -# .big="#{XMR.new(income).short.split(".")[0]}."
+          -# %small
+          -#  =XMR.new(income).short.split(".")[1]
+
+
+
+
+-#
+  .container
+    -#=Stat.group_by_day(:created_at).sum(:payment)
+
+    -Stat.group_by_day(:created_at).sum(:payment).each_slice(5) do |slice|
+      .row
+        -slice.each do |date, total|
+          .col.card
+            %em= XMR.new(total).quick
+
+
+  -# miner/47JUJMoxKkJL2v1iaEx31ngQCQcEGobUpevqtzSzKPTAEAt1Ay7NZrQgU6mnN2mVyWi7yk2ig68KsU8bfXQ45ainEAchp1T/stats
+  -# https://supportxmr.com/api/pool/stats
+  -# https://supportxmr.com/api/network/stats
 
 
 
 .container
   %table.table.table-striped
     -Stat.order(id: :desc).each do |stat|
-
       %tr
-        %td=stat.id
+        -#%td=stat.id
         %td=stat.created_at.strftime("%d.%m %Y %H:%M")
-        %td=stat.display_payment
+        %td
+          .cc.XMR
+          =XMR.new(stat.payment).to_s
         -#%td=stat.display_total

@@ -1,2 +1,36 @@
+@import "simple_calendar";
+@import "bootstrap";
+@import "cryptocoins";
 
- @import "bootstrap";
+.cc.XMR {
+  display: inline;
+}
+.income {
+  .date {
+    color: #666;
+    @extend small;
+    display: block;
+  }
+  .stats{
+    .cc {
+      color: orange;
+    }
+
+    .number {
+      display: inline;
+      .big {
+        display: inline;
+        margin: 0;
+        color: #333;
+      }
+      small {
+        vertical-align: top;
+        display: inline;
+        margin-left: -6px;
+        color: #555;
+      }
+    }
+
+
+  }
+}
