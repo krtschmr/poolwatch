@@ -5,32 +5,33 @@
 .cc.XMR {
   display: inline;
 }
-.income {
-  .date {
-    color: #666;
-    @extend small;
-    display: block;
-  }
-  .stats{
-    .cc {
-      color: orange;
-    }
 
-    .number {
+
+.date {
+  color: #666;
+  @extend small;
+  display: block;
+}
+.stats{
+  .cc {
+    color: orange;
+    display: inline;
+  }
+
+  .number {
+    display: inline;
+    .big {
       display: inline;
-      .big {
-        display: inline;
-        margin: 0;
-        color: #333;
-      }
-      small {
-        vertical-align: top;
-        display: inline;
-        margin-left: -6px;
-        color: #555;
-      }
+      margin: 0;
+      color: #333;
     }
-
-
+    small {
+      vertical-align: top;
+      display: inline;
+      margin-left: -6px;
+      color: #555;
+    }
   }
+
+
 }

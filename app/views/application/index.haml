@@ -1,10 +1,27 @@
+-date = Date.parse(params[:start_date]) rescue Date.today
+-monthly_income = Stat.where(created_at: date.beginning_of_month.to_time..date.end_of_month.to_time.end_of_day).sum(:payment)
+
+-days = Stat.where(created_at: date.beginning_of_month.to_time..date.end_of_month.to_time.end_of_day).group_by_day(:created_at).count.size
+
+
+
 .container
+  %h2
+    .income
+      .stats
+        .cc.XMR
+        =XMR.new(monthly_income).short
+        XMR
+
+    income for the month - #{XMR.new(monthly_income / days).short} per day
+
+
   =month_calendar do |date|
     .income.text-center
       .date=date.strftime("%d. %b %Y")
       -income = Stat.where(created_at: date.midnight..date.end_of_day).sum(:payment)
+      -@week_income += income
       -next unless income > 0
-
       .stats
         .cc.XMR
         =XMR.new(income).short
@@ -39,7 +56,7 @@
 
 .container
   %table.table.table-striped
-    -Stat.order(id: :desc).each do |stat|
+    -Stat.order(id: :desc).limit(100).each do |stat|
       %tr
         -#%td=stat.id
         %td=stat.created_at.strftime("%d.%m %Y %H:%M")
