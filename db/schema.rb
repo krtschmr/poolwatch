@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170922035510) do
+ActiveRecord::Schema.define(version: 20171229023654) do
 
   create_table "stats", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "amtPaid", default: 0
@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 20170922035510) do
     t.bigint "total", default: 0
     t.timestamp "created_at"
     t.bigint "payment"
+    t.string "address"
   end
 
 end

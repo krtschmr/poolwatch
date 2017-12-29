@@ -18,11 +18,19 @@ class Stat < ApplicationRecord
 		clean!(valid.id)
 	end
 
+	def self.import_all!
+		[
+			"48w5LQHbxU5aN1rS5QJ3Fne4DLUDVUY9hLSqzagys15WW8GcjMDhct84WhGeh7ePZ992RB6CVLjJShobQxFxdKt2RsQ9YjC", #tim
+			"44wue3VUAPzDz7PHQPojBtX235vjLosACM1xESGGmcxqCCtGmdppvXjA97rr3D3btXGKi1mnMmZH3dcf5fguuEoELJ1GR35" #joni
+		].map do |addr|
+			import!(addr)
+		end
+	end
 
-	def self.import!
-		url = "https://supportxmr.com/api/miner/48w5LQHbxU5aN1rS5QJ3Fne4DLUDVUY9hLSqzagys15WW8GcjMDhct84WhGeh7ePZ992RB6CVLjJShobQxFxdKt2RsQ9YjC/stats"
+	def self.import!(address)
+		url = "https://supportxmr.com/api/miner/#{address}/stats"
 		begin
-			Stat.create JSON.parse(open(url).read).slice("amtPaid", "amtDue")
+			Stat.create JSON.parse(open(url).read).slice("amtPaid", "amtDue").merge(address: address)
 		rescue
 			p "failed"
 		end
