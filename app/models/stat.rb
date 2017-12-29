@@ -5,6 +5,12 @@ class Stat < ApplicationRecord
 	# validates :total, uniqueness: true
 	validate :not_in_list, on: :create
 
+	ADDRESSES = [
+		"47JUJMoxKkJL2v1iaEx31ngQCQcEGobUpevqtzSzKPTAEAt1Ay7NZrQgU6mnN2mVyWi7yk2ig68KsU8bfXQ45ainEAchp1T", #tim
+		"44wue3VUAPzDz7PHQPojBtX235vjLosACM1xESGGmcxqCCtGmdppvXjA97rr3D3btXGKi1mnMmZH3dcf5fguuEoELJ1GR35"
+	]
+
+	scope :addr, ->(address) {where address: address }
 
 	def self.clean!(start=nil)
 		if start
@@ -19,10 +25,7 @@ class Stat < ApplicationRecord
 	end
 
 	def self.import_all!
-		[
-			"48w5LQHbxU5aN1rS5QJ3Fne4DLUDVUY9hLSqzagys15WW8GcjMDhct84WhGeh7ePZ992RB6CVLjJShobQxFxdKt2RsQ9YjC", #tim
-			"44wue3VUAPzDz7PHQPojBtX235vjLosACM1xESGGmcxqCCtGmdppvXjA97rr3D3btXGKi1mnMmZH3dcf5fguuEoELJ1GR35" #joni
-		].map do |addr|
+		ADDRESSES.map do |addr|
 			import!(addr)
 		end
 	end
@@ -61,10 +64,10 @@ class Stat < ApplicationRecord
 
 	def set_total
 		self.total = (amtDue + amtPaid)
-		self.payment = (total||0) - (Stat.last.total rescue 0)
+		self.payment = (total||0) - (Stat.addr(address).last.total rescue 0)
 	end
 
 	def not_in_list
-		self.errors.add(:total, :uniqueness) if Stat.find_by(total: total)
+		self.errors.add(:total, :uniqueness) if Stat.addr(address).find_by(total: total)
 	end
 end
